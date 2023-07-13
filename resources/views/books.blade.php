@@ -1,3 +1,5 @@
+@extends('_layout.cork');
+@section('content')
 <html>
     <body>
         <ul>
@@ -15,7 +17,8 @@
     @endforeach
     <br />
     
-    <button><a href="http://localhost/biblioteka-app/public/korisnici">Vidi koi se site korisnici </a></button>
+   <a href="http://localhost/biblioteka-app/public/korisnici">Vidi koi se site korisnici </a>
     </ul>
     </body>
 </html>
+@endsection

@@ -1,3 +1,5 @@
+@extends('_layout.cork')
+@section('content')
 <html>
     <body>
         <h2>Детали за книгата</h2>
@@ -10,3 +12,4 @@
              <button><a href="http://localhost/biblioteka-app/public/">Врати се во библиотеката</a></button>
 </body>
     </html>
+    @endsection
