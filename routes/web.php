@@ -26,4 +26,6 @@ Route::get("/biblioteka/avtor/{id}", [AuthorController::class, 'show'])->name('a
 Route::get("/", function(){
     return view('welcome');
 });
+Route::get("/authors", [BooksController::class,'index'])->name('author');
+
 
