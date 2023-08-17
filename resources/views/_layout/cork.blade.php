@@ -197,16 +197,42 @@
                     </div>
                     
                 </li>
-<span>‎  ‎  ‎  ‎  ‎  ‎  ‎  ‎ </span>
-                <a class="nav-link" href="{{ route('login') }}">Логирај се</a>
-                <span>‎  ‎  ‎  ‎  ‎  ‎  ‎  ‎  </span>
-                <a class="nav-link" href="{{ route('register') }}">Регистрација</a>
-                            </a>
+
+                @if(!Auth::user())
+                <li>
+                    <span>‎  ‎  ‎  ‎  ‎  ‎  ‎  ‎ </span>
+                    <a class="nav-link" href="{{ route('login') }}">Логирај се</a>
+                    <span>‎  ‎  ‎  ‎  ‎  ‎  ‎  ‎  </span>
+                    <a class="nav-link" href="{{ route('register') }}">Регистрација</a>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    
 
                 </li>
+                @else
+                <div class="avatar avatar-sm avatar-indicators avatar-online">
+
+<img alt="avatar" src="https://0.gravatar.com/avatar/{{ md5(Auth::user()->email) }}" class="rounded-circle">
+
+                            </div>
+                <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>   
+                @endif
             </ul>
         </header>
     </div>

@@ -17,7 +17,19 @@
                     @endif
 
                     {{ __('You are logged in!') }}
-                </div>
+                    <form>
+                        <label>Избери корисник кој изнајмува книга</label>
+                        <br/>
+                        <select>
+                        <option value="{{ Auth::user()->email }}">{{ Auth::user()->email }}</option>
+
+</select>
+                    <!-- <!-- </form> -->
+                    <h2>Books:</h2>
+<ul>
+    
+</ul>
+                </div> -->
             </div>
         </div>
     </div>
