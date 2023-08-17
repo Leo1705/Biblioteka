@@ -48,8 +48,22 @@ class User extends Authenticatable
             $this->attributes['google2fa_secret'] = encrypt($value);
     }
 
+
     public function getGoogle2faSecretAttribute($value)
     {
-        return decrypt($value);
+        $currentUrl = request()->url();
+    
+        if ($currentUrl !== 'http://localhost/Biblioteka-main/public/login') {
+            try {
+                return decrypt($value);
+            } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+                // Handle decryption error
+                return null;
+            }
+        }
+    
+        return $value;
     }
+    
+
 }
