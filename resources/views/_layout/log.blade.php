@@ -95,7 +95,7 @@
                         <div class="notification-scroll">
                             <div class="dropdown-item">
                                 <div class="media server-log">
-                                    <img src="{{ asset('/assets/src/assets/img/profile-16.jpeg')}}" class="img-fluid me-2" alt="avatar">
+                                    <img src="https://0.gravatar.com/avatar/b1a1712658b4fd9178f76c5e3433ea22e8ca1bde52d9b08b06fa01b8f290fddd" class="img-fluid me-2" alt="avatar">
                                     <div class="media-body">
                                         <div class="data-info">
                                             <h6 class="">Kara Young</h6>
@@ -202,7 +202,9 @@
                     <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="avatar-container">
                             <div class="avatar avatar-sm avatar-indicators avatar-online">
-                                <img alt="avatar" src="{{ asset('/assets/src/assets/img/profile-30.png')}}" class="rounded-circle">
+
+<img alt="avatar" src="https://0.gravatar.com/avatar/{{ md5(Auth::user()->email) }}" class="rounded-circle">
+
                             </div>
                         </div>
                     </a>
