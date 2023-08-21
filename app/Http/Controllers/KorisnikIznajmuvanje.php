@@ -1,24 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Books;
-use App\Models\User;
-use Illuminate\Http\Request;
 
-class IznajmuvanjeController extends Controller
+use Illuminate\Http\Request;
+use App\Models\BookSubmit;
+class KorisnikIznajmuvanje extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Responses
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $books = Books::all();
-      
+        $submissions = BookSubmit::select('feename', 'feePrice', 'created_at')->get();
         
-        $emails = User::pluck('email')->toArray();
-        return view('iznajmuvanje', ['books' => $books, 'emails' => $emails]);
+       
+        return view('korisnikiznajmuvanje', ['submissions' => $submissions]);
     }
 
     /**
@@ -39,8 +37,7 @@ class IznajmuvanjeController extends Controller
      */
     public function store(Request $request)
     {
-    
-    
+        //
     }
 
     /**
@@ -49,11 +46,11 @@ class IznajmuvanjeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        
- 
+        //
     }
+
     /**
      * Show the form for editing the specified resource.
      *

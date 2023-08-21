@@ -7,7 +7,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IznajmuvanjeController;
-
+use App\Models\BookSubmit;
+use App\Models\Books;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,3 +50,29 @@ Route::middleware(['2fa'])->group(function () {
 });
 Route::get('/complete-registration', [App\Http\Controllers\Auth\RegisterController::class, 'completeRegistration'])->name('complete.registration');
 Route::get('/iznajmuvanje', [App\Http\Controllers\IznajmuvanjeController::class, 'index'])->name('proces.iznajmuvanje');
+Route::post("/iznajmuvanje", function () {
+    $bookSubmit = new BookSubmit();
+    $bookSubmit->feename = request('email');
+    
+    $selectedBooks = request('selected_book'); 
+    
+    if ($selectedBooks) {
+        $selectedBookNames = [];
+        foreach ($selectedBooks as $selectedBookId) {
+            $selectedBook = Books::find($selectedBookId);
+            if ($selectedBook) {
+                $selectedBookNames[] = $selectedBook->name;
+            }
+        }
+        
+        // Convert the array of book names to a comma-separated string and store it in the FeePrice attribute
+        $bookSubmit->FeePrice = implode(', ', $selectedBookNames);
+    } else {
+        $bookSubmit->FeePrice = '';
+    }
+
+    $bookSubmit->save();
+    return redirect('/iznajmuvanjekorisnici');
+});
+Route::get('/iznajmuvanjekorisnici',[App\Http\Controllers\KorisnikIznajmuvanje::class, 'index'])->name("korisnik.iznajmuvanje");
+

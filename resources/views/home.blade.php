@@ -17,20 +17,13 @@
                     @endif
 
                     {{ __('You are logged in!') }}
-                    <form>
-                        <label>Избери корисник кој изнајмува книга</label>
-                        <br/>
-                        <select>
-                        <option value="{{ Auth::user()->email }}">{{ Auth::user()->email }}</option>
+                    <br/>
+                    <button><a href="{{route('proces.iznajmuvanje')}}">Add a new User</a></button>
+                    <button><a href="{{route('korisnik.iznajmuvanje')}}">See all Users</a></button>
+                </div>
 
-</select>
-                    <!-- <!-- </form> -->
-                    <h2>Books:</h2>
-<ul>
-    
-</ul>
-                </div> -->
             </div>
+           
         </div>
     </div>
 </div>
