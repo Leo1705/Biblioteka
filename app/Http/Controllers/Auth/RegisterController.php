@@ -101,7 +101,10 @@ public function register(Request $request)
     */
  public function completeRegistration(Request $request)
 {        
-    $request->merge(session('registration_data'));
+    if (session()->has('registration_data')) {
+        // Retrieve and merge data into the request
+        $request->merge(session('registration_data'));
+    }
     return $this->registration($request);
 }
 }

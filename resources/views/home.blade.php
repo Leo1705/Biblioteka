@@ -17,8 +17,13 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+                    <br/>
+                    <button><a href="{{route('proces.iznajmuvanje')}}">Add a new User</a></button>
+                    <button><a href="{{route('korisnik.iznajmuvanje')}}">See all Users</a></button>
                 </div>
+
             </div>
+           
         </div>
     </div>
 </div>
