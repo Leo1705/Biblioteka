@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Books extends Model
 {
     use HasFactory;
+    public $timestamps = false;
+
     protected $table = 'knigja';
     public function status(){
         return $this->belongsTo(Status::class);

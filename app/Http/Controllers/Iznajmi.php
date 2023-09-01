@@ -1,29 +1,42 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Users;
+
 use Illuminate\Http\Request;
 use App\Models\BookSubmit;
 use App\Models\Books;
-use App\Models\ReturnBook;
-use Illuminate\Support\Facades\DB;
-class UsersController extends Controller
+use App\Models\Users;
+class Iznajmi extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function showViewData()
-    {   
-    }
     public function index()
     {
-        $viewData = DB::table('iznajmuvanjeview')->get();
+        $bookSubmit = new BookSubmit();
+    $bookSubmit->feename = request('email');
+    
+    $selectedBooks = request('selected_book'); 
+    
+    if ($selectedBooks) {
+        $selectedBookNames = [];
+        foreach ($selectedBooks as $selectedBookId) {
+            $selectedBook = Books::find($selectedBookId);
+            if ($selectedBook) {
+                $selectedBookNames[] = $selectedBook->name;
+            }
+        }
+        
+        // Convert the array of book names to a comma-separated string and store it in the FeePrice attribute
+        $bookSubmit->FeePrice = implode(', ', $selectedBookNames);
+    } else {
+        $bookSubmit->FeePrice = '';
+    }
 
-// Using Eloquent (if you've set up a model)
-        $data['korisnici'] =   Users::all();
-        return view('korisnici',  ['viewData' => $viewData] + $data);
+    $bookSubmit->save();
+    return redirect('/iznajmuvanjekorisnici');
     }
 
     /**
@@ -53,37 +66,9 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getCurrentUserId()
+    public function show($id)
     {
-        $user = Auth::user();
-        if ($user) {
-            return $user->id;
-        }
-        
-        return null; // Handle the case when the user is not authenticated
-    }
-     public function show($id)
-    {
-        $user = Users::find($id);
-    
-        $idUser = $user->id;
-    
-        // Step 2: Use the email in the where clause to filter BookSubmit records
-        $submissions = ReturnBook::select('knigja_id', 'users_id', 'return_at')
- // Use the retrieved email here
-            ->get();
-    
-        // Retrieve all books (not sure how you want to use this)
-        $books = Books::all();
-    
-        // Pass the data to the view
-        $data = [
-            'korisnici' => $user,
-            'submissions' => $submissions,
-            'books' => $books,
-        ];
-    
-        return view('korisnici.show', $data);
+        //
     }
 
     /**

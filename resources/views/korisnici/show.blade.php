@@ -20,14 +20,18 @@
                 Име: {{$korisnici->korisniciIMe}}
               </h1>
               <h3>Избери која книга ја изнајмува</h3>
-              <form id="mainForm" method="POST" action="http://localhost/Biblioteka-main/public/iznajmuvanje/{{$korisnici->id}}">
-                @csrf           
-                <input value="{{$korisnici->email}}" name="email" disabled>Ја изнајмува</input>
+              <form id="mainForm" method="post" action="{{ route('iznajmi') }}">
+                @csrf
+                <input type="hidden" name="korisnikId" value="{{$korisnici->id}}" />           
+                {{ $korisnici->korisniciIMe }} Ја изнајмува</input>
                 @foreach ($books as $book)
                             <div>
+
         <img src="{{$book->srcKnigja}}" alt="Book Image" width="100px" height="100px"/>
-        <input type="checkbox"   onclick="handleCheckboxClick(this)" id="book_{{$book->id}}" name="selected_book[]" value="{{$book->id}}">
+        <input type="checkbox" id="book_{{$book->id}}" name="selected_book[]" value="{{$book->id}}">
+        <p>Има уште: {{$book->kolicina}} достапни книги </p>
         <label for="book_{{$book->id}}">{{$book->name}}</label>
+       
     </div>
                             @endforeach
                             <br/>
@@ -53,27 +57,34 @@
         });
     </script>
     <section id="firstTable">
-<table>
+    <table>
     <thead>
         <h2>Сите позајмени книги</h2>
         <tr>
             <th>Book's Name</th>
-            <th>Borowed At</th>
             <th>Return Book</th>
+            <th>Return Book Date</th>
         </tr>
     </thead>
     <tbody>
-
-        @foreach ($submissions as $submission)
-            <tr>
-  
-                <td>{{ $submission->feePrice }}</td>
-                <td>{{ $submission->created_at }}</td>
-                <td><a href="{{}}">Врати книга</a>
-            </tr>
-        @endforeach
+    @foreach ($submissions as $submission)
+    @if ($submission->return_at === null)
+        <tr>
+            <td>{{ $books[$submission->knigja_id - 1]->name }}</td>
+            <form method="post" action="{{ route('vrati') }}">
+                @csrf
+                <td>
+                    <button type="submit">Врати книга</button>
+                    <input type="hidden" name="knigjaId" value="{{ $submission->knigja_id }}" />
+                </td>
+            </form>
+            <td>{{ $submission->return_at }}</td>
+        </tr>
+    @endif
+@endforeach
     </tbody>
 </table>
+
     </section>
     <section id="secondTable">
 <table style="display:inline-block">
@@ -81,19 +92,21 @@
         <h2>Сите Вратени Книги</h2>
         <tr>
             <th>Book's Name</th>
-            <th> </th>
-            <th> </th>
+            <th>Returned Date</th>
+
         </tr>
     </thead>
     <tbody>
 
         
-            <tr>
-  
-                <td></td>
-                <td></td>
-                <td><a href=""> </a>
-            </tr>
+    @foreach ($submissions as $submission)
+    @if ($submission->return_at !== null)
+        <tr>
+            <td>{{ $books[$submission->knigja_id - 1]->name }}</td> <!-- Empty cell for book name -->
+            <td>{{ $submission->return_at }}</td> <!-- Display return_at column -->
+        </tr>
+    @endif
+@endforeach
     </tbody>
 </table>
     </section>

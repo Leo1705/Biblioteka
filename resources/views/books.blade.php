@@ -14,7 +14,7 @@
     <div class="knigja">
        <h3>
         
-       <img src="{{ asset('/assets/' . $book->knigjacol) }}" class="knigjaImage"/>
+       <img src="{{$book->srcKnigja}}" alt="Book Image" width="100px" height="100px"/>
 
     <br/>     
     <a href="{{ route('book.show', ['id' => $book->id]) }}" class="bookName">{{$book->name}}</a>

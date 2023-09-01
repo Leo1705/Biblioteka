@@ -94,5 +94,23 @@
         </tbody>
        
     </table>
+    <!-- <table>
+    <thead>
+        <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($viewData as $row)
+            <tr>
+                <td>{{ $row->knigja_id }}</td>
+                <td>{{ $row->users_id }}</td>
+
+            </tr>
+        @endforeach
+    </tbody>
+</table> -->
 </div>
     @endsection

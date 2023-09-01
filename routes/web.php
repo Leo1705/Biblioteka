@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BooksController;
 use App\Http\Controllers\UsersController;
@@ -8,8 +8,10 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IznajmuvanjeController;
 use App\Models\BookSubmit;
+use App\Models\ReturnBook;
 use App\Models\Books;
 use App\Models\Users;
+use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,8 +26,8 @@ use App\Models\Users;
 // Route::get('/', function () {
   
 // });
-Route::get("/books", [BooksController::class,'index'])->name('book.show');
-Route::get("/korisnici", [UsersController::class,'index']);
+Route::get("/books", [BooksController::class,'index'])->name('book');
+Route::get("/korisnici", [UsersController::class,'index'])->name('korisnici');
 Route::get('/biblioteka/book/{id}', [BooksController::class, 'show'])->name('book.show');
 Route::get("/biblioteka/avtor/{id}", [AuthorController::class, 'show'])->name('author.show');
 Route::get("/korisnici/{id}",[UsersController::class, 'show'])->name('korisnici.show');
@@ -44,7 +46,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::middleware(['2fa'])->group(function () {
-    // HomeController
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::post('/2fa', function () {
         return redirect(route('home'));
@@ -52,59 +53,22 @@ Route::middleware(['2fa'])->group(function () {
 });
 Route::get('/complete-registration', [App\Http\Controllers\Auth\RegisterController::class, 'completeRegistration'])->name('complete.registration');
 Route::get('/iznajmuvanje', [App\Http\Controllers\IznajmuvanjeController::class, 'index'])->name('proces.iznajmuvanje');
-Route::post("/iznajmuvanje", function () {
-    $bookSubmit = new BookSubmit();
-    $bookSubmit->feename = request('email');
-    
-    $selectedBooks = request('selected_book'); 
-    
-    if ($selectedBooks) {
-        $selectedBookNames = [];
-        foreach ($selectedBooks as $selectedBookId) {
-            $selectedBook = Books::find($selectedBookId);
-            if ($selectedBook) {
-                $selectedBookNames[] = $selectedBook->name;
-            }
-        }
-        
-        // Convert the array of book names to a comma-separated string and store it in the FeePrice attribute
-        $bookSubmit->FeePrice = implode(', ', $selectedBookNames);
-    } else {
-        $bookSubmit->FeePrice = '';
+Route::post("/iznajmuvanje", [App\Http\Controllers\Iznajmi::class, 'index']);
+Route::post("/iznajmi",[App\Http\Controllers\IznajmiKorisnik::class, 'index'])->name('iznajmi');
+
+Route::post("/vrati", function (Request $request) {
+    $knigjaId = $request->input('knigjaId');
+
+    if ($knigjaId) {
+        $currentDateTime = Carbon::now();
+        BookSubmit::where('knigja_id', $knigjaId)
+            ->update(['return_at' => $currentDateTime]);
+
+        return redirect()->back()->with('success', 'Book returned successfully.');
     }
-
-    $bookSubmit->save();
-    return redirect('/iznajmuvanjekorisnici');
-});
-Route::post("/iznajmuvanje/{id}", function ($id) {
-    // Assuming you have already fetched $korisnici using the provided $id
-    $korisnici = Users::find($id);
-
-    $bookSubmit = new BookSubmit();
-
-    // Use the email from the $korisnici object
-    $bookSubmit->feename = $korisnici->email;
-
-    $selectedBooks = request('selected_book'); 
-    
-    if ($selectedBooks) {
-        $selectedBookNames = [];
-        foreach ($selectedBooks as $selectedBookId) {
-            $selectedBook = Books::find($selectedBookId);
-            if ($selectedBook) {
-                $selectedBookNames[] = $selectedBook->name;
-            }
-        }
-        
-        // Convert the array of book names to a comma-separated string and store it in the FeePrice attribute
-        $bookSubmit->FeePrice = implode(', ', $selectedBookNames);
-    } else {
-        $bookSubmit->FeePrice = '';
+    else{
+        return redirect()->back()->with('error', 'Something went wrong.');
     }
-
-    $bookSubmit->save();
-    return redirect('/korisnici');
-});
-
-Route::get('/iznajmuvanjekorisnici',[App\Http\Controllers\KorisnikIznajmuvanje::class, 'index'])->name("korisnik.iznajmuvanje");
+})->name('vrati');
+// Route::get('/iznajmuvanjekorisnici',[App\Http\Controllers\KorisnikIznajmuvanje::class, 'index'])->name("korisnik.iznajmuvanje");
 

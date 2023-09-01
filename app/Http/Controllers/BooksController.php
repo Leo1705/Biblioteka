@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Books;
 use App\Models\avtor;
+use Illuminate\Support\Facades\DB;
+use App\Models\Users;
 use Illuminate\Http\Request;
 
 class BooksController extends Controller
@@ -15,8 +17,9 @@ class BooksController extends Controller
     public function index()
     {
         $data['books'] = Books::all();
+       
         $data['authors'] = avtor::all();
-        return view('books', $data);
+        return view('books',  $data);
     }
 
     /**
@@ -48,8 +51,17 @@ class BooksController extends Controller
      */
     public function show(Books $books, $id)
     {
-        $data['book'] = Books::find($id);
-        return view('books.show', $data);
+        $book = Books::find($id);
+        $korisnici = Users::all();
+        $iznajmuvanjeViewData = DB::table('iznajmuvanjeview')
+            ->where('knigja_id', $id)
+            ->get();
+    
+        return view('books.show', [
+            'book' => $book,
+            'korisnici' => $korisnici,
+            'iznajmuvanjeViewData' => $iznajmuvanjeViewData,
+        ]);
     }
 
     /**
