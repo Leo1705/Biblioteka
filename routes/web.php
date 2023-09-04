@@ -28,8 +28,8 @@ use Carbon\Carbon;
 // });
 Route::get("/books", [BooksController::class,'index'])->name('book');
 Route::get("/korisnici", [UsersController::class,'index'])->name('korisnici');
-Route::get('/biblioteka/book/{id}', [BooksController::class, 'show'])->name('book.show');
-Route::get("/biblioteka/avtor/{id}", [AuthorController::class, 'show'])->name('author.show');
+Route::get('/book/{id}', [BooksController::class, 'show'])->name('book.show');
+Route::get("/avtor/{id}", [AuthorController::class, 'show'])->name('author.show');
 Route::get("/korisnici/{id}",[UsersController::class, 'show'])->name('korisnici.show');
 Route::get("/", function(){
     return view('welcome');

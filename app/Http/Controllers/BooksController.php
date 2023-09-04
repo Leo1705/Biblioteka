@@ -5,6 +5,7 @@ use App\Models\Books;
 use App\Models\avtor;
 use Illuminate\Support\Facades\DB;
 use App\Models\Users;
+use App\Models\IznajmuvanjeView;
 use Illuminate\Http\Request;
 
 class BooksController extends Controller
@@ -49,13 +50,11 @@ class BooksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Books $books, $id)
-    {
+    public function show(Books $books, $id)  
+ {
         $book = Books::find($id);
         $korisnici = Users::all();
-        $iznajmuvanjeViewData = DB::table('iznajmuvanjeview')
-            ->where('knigja_id', $id)
-            ->get();
+        $iznajmuvanjeViewData = IznajmuvanjeView::where('knigja_id', $id)->get();
     
         return view('books.show', [
             'book' => $book,

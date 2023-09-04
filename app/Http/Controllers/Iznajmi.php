@@ -29,7 +29,7 @@ class Iznajmi extends Controller
             }
         }
         
-        // Convert the array of book names to a comma-separated string and store it in the FeePrice attribute
+        
         $bookSubmit->FeePrice = implode(', ', $selectedBookNames);
     } else {
         $bookSubmit->FeePrice = '';

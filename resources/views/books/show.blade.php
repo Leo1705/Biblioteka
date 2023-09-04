@@ -85,29 +85,31 @@
                     <div class="form-check form-check-primary">
                         <input class="form-check-input mixed_child" type="checkbox">
                     </div>
+                    @foreach($korisnici as $korisnik)
                 </td>
          
                 <td class=""><a href="{{ route('korisnici.show', ['id' => $korisnici[0]->id]) }}">
-    {{ $korisnici[0]->korisniciIMe }}
+    {{ $korisnik->korisniciIMe }}
 </a>
 </td>
              
                 <td>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                    <span class="table-inner-text">{{$korisnici[0]->email}}</span>
+                    <span class="table-inner-text">{{$korisnik->email}}</span>
                 </td>
                 <td class="text-center">
 
                 <form id="mainForm" method="post" action="{{ route('iznajmi') }}">
                 @csrf
-                <input type="hidden" name="korisnikId" value="{{$korisnici[0]->id}}" />
-                <input type="hidden" id="book_{{$book->id}}" name="selected_book[]" value="{{$book->id}}">
+                <input type="hidden" name="korisnikId" value="{{$korisnik->id}}" />
+                <input type="hidden" id="book_{{$book->id}}" name="book" value="{{$book->id}}">
+                <input type="hidden" name="selected_book" value="{{$book->id}}">
                 <button type="submit">Изнајми книга</button>
 
 </form>
                 </td>
                 <td class="text-center">
-                    <span class="badge badge-light-success"><img alt="avatar" src="https://0.gravatar.com/avatar/{{ md5($korisnici[0]->email) }}" class="rounded-circle"></span>
+                    <span class="badge badge-light-success"><img alt="avatar" src="https://0.gravatar.com/avatar/{{ md5($korisnik->email) }}" class="rounded-circle"></span>
                 </td>
             </tr>
            
@@ -117,59 +119,10 @@
                         <input class="form-check-input mixed_child" type="checkbox">
                     </div>
                 </td>
-                <td class=""><a href="{{ route('korisnici.show', ['id' => $korisnici[1]->id]) }}">{{$korisnici[1]->korisniciIMe}}</a></td>
-                <td>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                    <span class="table-inner-text">{{$korisnici[1]->email}}</span>
-                </td>
-                <td class="text-center">
-
-                <form id="mainForm" method="post" action="{{ route('iznajmi') }}">
-                @csrf
-                <input type="hidden" name="korisnikId" value="{{$korisnici[1]->id}}" />
-                <input type="hidden" id="book_{{$book->id}}" name="selected_book[]" value="{{$book->id}}">
-                <button type="submit">Изнајми книга</button>
-
-</form>
-
-
-
-                </td>
-                <td class="text-center">
-                    <span class="badge badge-light-secondary"><img alt="avatar" src="https://0.gravatar.com/avatar/{{ md5($korisnici[1]->email) }}" class="rounded-circle"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="form-check form-check-primary">
-                        <input class="form-check-input mixed_child" type="checkbox">
-                    </div>
-                </td>
-                <td class=""><a href="{{ route('korisnici.show', ['id' => $korisnici[2]->id]) }}">{{$korisnici[2]->korisniciIMe}}</a></td>
-                <td>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                    <span class="table-inner-text">{{$korisnici[2]->email}}</span>
-                </td>
-                <td class="text-center">
-
-                <form id="mainForm" method="post" action="{{ route('iznajmi') }}">
-                @csrf
-                <input type="hidden" name="korisnikId" value="{{$korisnici[2]->id}}" />
-                <input type="hidden" id="book_{{$book->id}}" name="selected_book[]" value="{{$book->id}}">
-                <button type="submit">Изнајми книга</button>
-
-</form>
-                </td>
-                <td class="text-center">
-                    <span class="badge badge-light-danger"><img alt="avatar" src="https://0.gravatar.com/avatar/{{ md5($korisnici[2]->email) }}" class="rounded-circle"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="form-check form-check-primary">
-                        <input class="form-check-input mixed_child" type="checkbox">
-                    </div>
-                </td>
+        
+          
+                @endforeach
+                
                 <td class=""></td>
                 <td>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>

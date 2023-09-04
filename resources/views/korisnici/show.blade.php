@@ -22,13 +22,14 @@
               <h3>Избери која книга ја изнајмува</h3>
               <form id="mainForm" method="post" action="{{ route('iznajmi') }}">
                 @csrf
-                <input type="hidden" name="korisnikId" value="{{$korisnici->id}}" />           
+                <input type="hidden" name="korisnikId" value="{{$korisnici->id}}" />     
+                <input type="hidden" name="redirect_to" v />      
                 {{ $korisnici->korisniciIMe }} Ја изнајмува</input>
                 @foreach ($books as $book)
                             <div>
 
         <img src="{{$book->srcKnigja}}" alt="Book Image" width="100px" height="100px"/>
-        <input type="checkbox" id="book_{{$book->id}}" name="selected_book[]" value="{{$book->id}}">
+        <input type="checkbox" id="book_{{$book->id}}" name="selected_book" value="{{$book->id}}">
         <p>Има уште: {{$book->kolicina}} достапни книги </p>
         <label for="book_{{$book->id}}">{{$book->name}}</label>
        

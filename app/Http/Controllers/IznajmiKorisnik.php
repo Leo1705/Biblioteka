@@ -26,7 +26,7 @@ class IznajmiKorisnik extends Controller
     if ($selectedBooks) {
         $selectedBookNames = [];
         
-        foreach ($selectedBooks as $selectedBookId) {
+        foreach ( (array) $selectedBooks as $selectedBookId) {
             $selectedBook = Books::find($selectedBookId);
             
             if ($selectedBook) {
@@ -49,14 +49,24 @@ class IznajmiKorisnik extends Controller
     
     $bookSubmit->save();
     $data = [];
-
-    if (!empty($errorMessages)) {
-        // Redirect back with error messages
-        return redirect(route('korisnici.show', [request('korisnikId')]))->withErrors($errorMessages);
-    } else {
-        // Redirect without errors
+    if (request()->has('korisnici')) {
         return redirect(route('korisnici.show', [request('korisnikId')]));
     }
+    
+    if (request()->has('book')) {
+        return redirect(route('book.show',[request('selected_book')]));
+    }
+    
+        // else{
+        //     return redirect(route('korisnici.show', [request('korisnikId')])); 
+        // }
+    // if (!empty($errorMessages)) {
+    //     // Redirect back with error messages
+    //     return redirect(route('korisnici.show', [request('korisnikId')]))->withErrors($errorMessages);
+    // } else {
+    //     // Redirect without errors
+    //     return redirect(route('korisnici.show', [request('korisnikId')]));
+    // }
     }
 
     /**
